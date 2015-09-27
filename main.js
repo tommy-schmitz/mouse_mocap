@@ -71,21 +71,21 @@ const draw_paper_lines = function(ctx) {
 const compile_path = function(buffer) {
 	let n = 1;
 
-	let result = 'Motion[] anim_0 = new Motion[]{\n';
+	let result = 'public static AIBehavior.Motion[] anim_0 = new AIBehavior.Motion[]{\n';
 	for(b of buffer)
 		util.dispatch(b, {
 			split() {
 				result +=
 `\
 };
-Motion[] anim_` + n + ` = new Motion[]{
+public static AIBehavior.Motion[] anim_` + n + ` = new AIBehavior.Motion[]{
 `;
 
 				++n;
 			},
 			DEFAULT({type,t,x,y}) {
-				result += '    new Motion("' + type + '", ' + t + ', ' + x
-				        + ', ' + y + '),\n';
+				result += '    new AIBehavior.Motion("' + type + '", ' + t
+				        + ', ' + x + ', ' + y + '),\n';
 			},
 		});
 	result += '};\n';
