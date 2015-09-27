@@ -63,14 +63,14 @@ const draw_paper_lines = function(ctx) {
 const compile_path = function(buffer) {
 	let n = 1;
 
-	let result = 'public static AIBehavior.Motion[] anim_0 = new AIBehavior.Motion[]{\n';
+	let result = 'public static AIBehavior.Motion[][] anims = new AIBehavior.Motion[][]{new AIBehavior.Motion[]{\n';
 	for(b of buffer)
 		util.dispatch(b, {
 			split() {
 				result +=
 `\
-};
-public static AIBehavior.Motion[] anim_` + n + ` = new AIBehavior.Motion[]{
+},
+new AIBehavior.Motion[]{
 `;
 
 				++n;
@@ -80,7 +80,7 @@ public static AIBehavior.Motion[] anim_` + n + ` = new AIBehavior.Motion[]{
 				        + ', ' + x + ', ' + y + '),\n';
 			},
 		});
-	result += '};\n';
+	result += '}};\n';
 	return result;
 };
 
