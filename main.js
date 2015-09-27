@@ -69,6 +69,8 @@ const draw_paper_lines = function(ctx) {
 };
 
 const compile_path = function(buffer) {
+	let n = 1;
+
 	let result = 'Motion[] anim_0 = new Motion[]{\n';
 	for(b of buffer)
 		util.dispatch(b, {
@@ -78,6 +80,8 @@ const compile_path = function(buffer) {
 };
 Motion[] anim_` + n + ` = new Motion[]{
 `;
+
+				++n;
 			},
 			DEFAULT({type,t,x,y}) {
 				result += '    new Motion("' + type + '", ' + t + ', ' + x
