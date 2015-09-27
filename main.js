@@ -32,14 +32,6 @@ const draw_button = function(ctx, {x, y, w, h, color, caption}) {
 const over_button = function({x, y, w, h}) {
 	return input.mx >= x && input.mx < x+w && input.my >= y && input.my < y+h;
 };
-const reset_button = {
-	x: 0,
-	y: game.HEIGHT-32,
-	w: 100,
-	h: 32,
-	color: '#88f',
-	caption: 'Reset',
-};
 const save_button = {
 	x: game.WIDTH-100,
 	y: game.HEIGHT-32,
@@ -168,7 +160,6 @@ game.ui = {
 			my_ctx = ctx;
 			reset_paper(ctx);
 		}
-		draw_button(ctx, reset_button);
 		draw_button(ctx, save_button);
 	},
 	mouse_moved({mx, my}) {
@@ -189,8 +180,6 @@ game.ui = {
 		if(over_button(save_button)) {
 			confirm();
 			save();
-		} else if(over_button(reset_button)) {
-			cancel();
 		} else {
 			mousedown = true;
 			single_buf.push(make_dot());
