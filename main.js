@@ -123,23 +123,28 @@ const reset_paper = function(ctx) {
 const cancel = function() {
 	single_buf.length = 0;
 
+	start_time = Date.now();
 	single_buf.push(split);
-	single_buf.push(make_moved(Date.now(), input.mx, input.my));
+	single_buf.push(make_moved());
 	reset_paper(my_ctx);
 };
 const confirm = function() {
 	Array.prototype.push.apply(buf, single_buf);
 	single_buf.length = 0;
 
+	start_time = Date.now();
 	single_buf.push(split);
-	single_buf.push(make_moved(Date.now(), input.mx, input.my));
+	single_buf.push(make_moved());
 	reset_paper(my_ctx);
 };
 
 const split = {type: 'split'};
-const make_moved = (t, x, y) => ({type: 'moved', t, x, y});
-const make_dragged = (t, x, y) => ({type: 'dragged', t, x, y});
-const make_dot = (t, x, y) => ({type: 'dot', t, x, y});
+const make_moved = () =>
+	({type: 'moved', t: Date.now()-start_time, x: input.mx, y: input.my});
+const make_dragged = () =>
+	({type: 'dragged', t: Date.now()-start_time, x: input.mx, y: input.my});
+const make_dot = () =>
+	({type: 'dot', t: Date.now()-start_time, x: input.mx, y: input.my});
 
 window.onbeforeunload = function(e) {
 	const msg = 'Are you sure you want to quit?';
@@ -151,6 +156,7 @@ const single_buf = game.single_buf = [];
 let mousedown = false;
 let prev_x = 0;
 let prev_y = 0;
+let start_time = Date.now();
 var my_ctx = null;
 game.ui = {
 	draw(ctx) {
@@ -163,11 +169,11 @@ game.ui = {
 	},
 	mouse_moved({mx, my}) {
 		if(mousedown) {
-			single_buf.push(make_dragged(Date.now(), input.mx, input.my));
+			single_buf.push(make_dragged());
 			my_ctx.strokeStyle = 'black'
 			line(my_ctx, prev_x+.5, prev_y+.5, mx+.5, my+.5);
 		} else {
-			single_buf.push(make_moved(Date.now(), input.mx, input.my));
+			single_buf.push(make_moved());
 		}
 
 		prev_x = mx;
@@ -183,7 +189,7 @@ game.ui = {
 			cancel();
 		} else {
 			mousedown = true;
-			single_buf.push(make_dot(Date.now(), mx, my));
+			single_buf.push(make_dot());
 		}
 	},
 	mouse_released() {
